@@ -1,10 +1,14 @@
 import React,{useState,useEffect} from 'react'
-import {Link} from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import Axios from 'axios';
 const SITE_KEY = "6LdFmGsbAAAAAP9O3oK2h9FLN5ldyEbHNvPes4L6";
 
 function Login() {
+    const history=useHistory();
 
-    const [data, setdata] = useState({email:'',password:'',messageSent:false});
+
+
+    const [user, setUser] = useState({email:'',password:'',messageSent:false});
 
     
   
@@ -13,7 +17,7 @@ function Login() {
     const handleChange = (e) => {
         name = e.target.name;
         value = e.target.value;
-        setdata({ ...data, [name]: value });
+        setUser({ ...user, [name]: value });
     
       };
 
@@ -64,8 +68,8 @@ function Login() {
           },
           body: JSON.stringify({
             
-            "email": data.email,
-            "password": data.password,
+            "email": user.email,
+            "password": user.password,
             "g-recaptcha-response": token
           })
         }).then(res => res.json()).then(res => {
@@ -74,34 +78,81 @@ function Login() {
           if(res.score>0.6){
             //------
             //send the email and password for passport authentication (make an API to backend)
+              postLoginData();
+
+
+
           }
           else{
               //-----
               //dont allow entry to the user.
+              history.push('/login');
           }
          
      
         });
-      }
+      };
 
-    return (
-        <div>
-            
-            <form >
-                <div>
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" value={data.email} onChange={handleChange} required/>
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" value={data.password} onChange={handleChange} required/>
-                </div>
-                <button onClick={handleOnClick}>Login</button>
-                
-            </form>
-            <Link to="/register">Register</Link>
-        </div>
-    )
+      const postLoginData = async () => {
+        
+        // method to post to the API
+        function login (){
+          Axios({
+            method: "POST",
+            data: {
+              email: user.email,
+              password: user.password,
+            },
+            withCredentials: true,
+            url: "http://localhost:5000/login",
+          }).then((res) => {
+              console.log(res);
+              const data= res.data;
+
+              if(data === true){
+                history.push('/session')
+                // setting a local variable for persistance and not going into other routes
+                localStorage.setItem('authorized', true);
+              }else{
+                alert(data.message);
+              }
+          })
+          .catch(err => console.log(err));
+          
+
+      };
+      
+      // calling function
+      login();
+    
+      };
+
+      if(!localStorage.getItem('authorized')){
+        return (
+          <div>
+              
+              <form >
+                  <div>
+                      <label for="email">Email</label>
+                      <input type="email" id="email" name="email" value={user.email} onChange={handleChange} required/>
+                  </div>
+                  <div>
+                      <label for="password">Password</label>
+                      <input type="password" id="password" name="password" value={user.password} onChange={handleChange} required/>
+                  </div>
+                  <button onClick={handleOnClick}>Login</button>
+                  
+              </form>
+              <Link to="/register">Register</Link>
+          </div>
+        )
+      }else {
+        
+        return(
+          <Redirect to="/session"/>
+        )
+      }
+    
 }
 
 export default Login
