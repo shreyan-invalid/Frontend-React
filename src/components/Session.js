@@ -14,7 +14,7 @@ function Session() {
               withCredentials: true,
               url: "http://localhost:5000/user",
             }).then((res) => {
-              setData(res.data.name);
+              setData(res.data);
               console.log(res.data.name);
             });
         };
@@ -34,7 +34,7 @@ function Session() {
                 console.log(res.data);
                 history.push('/');
                 localStorage.removeItem('authorized');
-              });
+              }).catch(err => console.log(err));
         }
 
         logoutUser();
@@ -44,7 +44,8 @@ function Session() {
         
         return (
             <div>
-                <h1>Welcome {data}</h1>
+                <h1>Welcome {data.name}</h1>
+                <h2>You have {data.session} sessions runnin!</h2>
                 {/* Logout button */}
                 <button onClick={logout}>Logout</button>
             </div>
