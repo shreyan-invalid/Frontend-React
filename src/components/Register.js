@@ -45,7 +45,7 @@ function Register() {
       };
 
     
-    if(!localStorage.getItem('authorized')){
+    if(!sessionStorage.getItem('authorized')){
         return (
             <div>
                 <form method="POST">

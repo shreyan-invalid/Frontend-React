@@ -110,9 +110,10 @@ function Login() {
               const data= res.data;
 
               if(data === true){
-                history.push('/session')
+                
                 // setting a local variable for persistance and not going into other routes
-                localStorage.setItem('authorized', true);
+                sessionStorage.setItem('authorized', true);
+                history.push('/session');
               }else{
                 alert(data.message);
               }
@@ -127,7 +128,7 @@ function Login() {
     
       };
 
-      if(!localStorage.getItem('authorized')){
+      if(!sessionStorage.getItem('authorized')){
         return (
           <div>
               

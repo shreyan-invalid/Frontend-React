@@ -32,15 +32,15 @@ function Session() {
                 url: "http://localhost:5000/logout",
               }).then((res) => {
                 console.log(res.data);
+                sessionStorage.removeItem('authorized');
                 history.push('/');
-                localStorage.removeItem('authorized');
               }).catch(err => console.log(err));
         }
 
         logoutUser();
     }
 
-    if(localStorage.getItem('authorized')){
+    if(sessionStorage.getItem('authorized')){
         
         return (
             <div>
