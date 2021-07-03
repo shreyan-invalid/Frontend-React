@@ -104,26 +104,21 @@ function Login() {
               password: user.password,
             },
             withCredentials: true,
-            url: "http://localhost:5000/login",
+            url: "http://localhost:5000/api/session",
           }).then((res) => {
-              console.log(res);
-              const data= res.data;
-
-              if(data === true){
-                
-                // setting a local variable for persistance and not going into other routes
-                sessionStorage.setItem('authorized', true);
-                history.push('/session');
-              }else{
-                alert(data.message);
-              }
+             console.log(res.data);
+             history.push('/Session');
+             sessionStorage.setItem('authorized', true);
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err)
+            alert(err.message);
+          });
           
 
       };
       
-      // login
+      // logincd
       // calling function
       login();
     

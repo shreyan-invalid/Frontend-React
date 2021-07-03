@@ -15,32 +15,37 @@ function Register() {
 
     // Takes an event a dispatches an event to register the user throught the api
     const postRegisterData = async (e) => {
-        console.log('Registering');
+
         e.preventDefault();
+
+
+        console.log('Registering');
+
+        
+        if(user.password === user.confirmPassword){
+            register();
+        }else{
+            alert('passwords dont match');
+        }
+        
         function register (){
             Axios({
               method: "POST",
               data: {
-                name: user.name,
+                username: user.name,
                 email: user.email,
                 password: user.password,
-                confirmPassword: user.confirmPassword
               },
               withCredentials: true,
-              url: "http://localhost:5000/register",
+              url: "http://localhost:5000/api/users",
             }).then((res) => {
-                if(res.data === "User Created"){
-                    history.push('/login');
-                }else{
-                    alert(res.data);
-                }
+                console.log(res);
+                sessionStorage.setItem('authorized', true);
+                history.push('/session');
             })
             .catch(err => console.log(err));
 
         };
-    
-        
-        register();
     
       };
 

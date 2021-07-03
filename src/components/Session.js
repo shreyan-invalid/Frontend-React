@@ -4,7 +4,8 @@ import Axios from 'axios';
 
 
 function Session() {
-    const [data, setData]= useState('');
+    const [data, setData]= useState({});
+    console.log(data);
     const history= useHistory();
 
     useEffect(() => {
@@ -12,10 +13,10 @@ function Session() {
             Axios({
               method: "GET",
               withCredentials: true,
-              url: "http://localhost:5000/user",
+              url: "http://localhost:5000/api/session",
             }).then((res) => {
+              console.log(res);
               setData(res.data);
-              console.log(res.data.name);
             });
         };
 
@@ -27,9 +28,9 @@ function Session() {
 
         function logoutUser(){
             Axios({
-                method: "GET",
+                method: "DELETE",
                 withCredentials: true,
-                url: "http://localhost:5000/logout",
+                url: "http://localhost:5000/api/session",
               }).then((res) => {
                 console.log(res.data);
                 sessionStorage.removeItem('authorized');
@@ -44,8 +45,8 @@ function Session() {
         
         return (
             <div>
-                <h1>Welcome {data.name}</h1>
-                <h2>You have {data.session} sessions runnin!</h2>
+                <h1>Welcome {data.user?.username}</h1>
+                <h2>You have  sessions runnin in {data.user?.ipAddress}!</h2>
                 {/* Logout button */}
                 <button onClick={logout}>Logout</button>
             </div>
