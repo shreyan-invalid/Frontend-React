@@ -37,7 +37,7 @@ function Register() {
                 password: user.password,
               },
               withCredentials: true,
-              url: "http://localhost:5000/api/users",
+              url: "http://143.110.252.157:8080/api/authentication/signup",
             }).then((res) => {
                 console.log(res);
                 sessionStorage.setItem('authorized', true);

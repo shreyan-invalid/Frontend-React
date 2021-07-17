@@ -104,7 +104,7 @@ function Login() {
               password: user.password,
             },
             withCredentials: true,
-            url: "http://localhost:5000/api/session",
+            url: "http://143.110.252.157:8080/api/authentication/signin",
           }).then((res) => {
              console.log(res.data);
              history.push('/Session');

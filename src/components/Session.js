@@ -13,7 +13,7 @@ function Session() {
             Axios({
               method: "GET",
               withCredentials: true,
-              url: "http://localhost:5000/api/session",
+              url: "http://143.110.252.157:8080/api/authentication/currentUser",
             }).then((res) => {
               console.log(res);
               setData(res.data);
@@ -28,9 +28,9 @@ function Session() {
 
         function logoutUser(){
             Axios({
-                method: "DELETE",
+                method: "GET",
                 withCredentials: true,
-                url: "http://localhost:5000/api/session",
+                url: "http://143.110.252.157:8080/api/authentication/signout",
               }).then((res) => {
                 console.log(res.data);
                 sessionStorage.removeItem('authorized');
@@ -45,7 +45,7 @@ function Session() {
         
         return (
             <div>
-                <h1>Welcome {data.user?.username}</h1>
+                <h1>Welcome {data.data?.email}</h1>
                 <h2>You have  sessions runnin in {data.user?.ipAddress}!</h2>
                 {/* Logout button */}
                 <button onClick={logout}>Logout</button>
